@@ -17,7 +17,6 @@ const Linkedin = (p: React.SVGProps<SVGSVGElement>) => (
   </svg>
 );
 
-/* ---------- Cursor ---------- */
 export function Cursor() {
   const x = useSpring(0, { stiffness: 500, damping: 40 });
   const y = useSpring(0, { stiffness: 500, damping: 40 });
@@ -25,8 +24,10 @@ export function Cursor() {
   const yRing = useSpring(0, { stiffness: 120, damping: 20 });
   useEffect(() => {
     const move = (e: MouseEvent) => {
-      x.set(e.clientX - 4); y.set(e.clientY - 4);
-      xRing.set(e.clientX - 18); yRing.set(e.clientY - 18);
+      x.set(e.clientX - 4);
+      y.set(e.clientY - 4);
+      xRing.set(e.clientX - 18);
+      yRing.set(e.clientY - 18);
     };
     window.addEventListener("mousemove", move);
     return () => window.removeEventListener("mousemove", move);
@@ -39,7 +40,6 @@ export function Cursor() {
   );
 }
 
-/* ---------- Nav ---------- */
 const NAV = [
   { id: "about", label: "About" },
   { id: "experience", label: "Experience" },
@@ -53,15 +53,12 @@ export function Nav() {
   const [scrolled, setScrolled] = useState(false);
   useEffect(() => {
     const f = () => setScrolled(window.scrollY > 20);
-    f(); window.addEventListener("scroll", f);
+    f();
+    window.addEventListener("scroll", f);
     return () => window.removeEventListener("scroll", f);
   }, []);
   return (
-    <motion.header
-      initial={{ y: -40, opacity: 0 }} animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-      className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ${scrolled ? "py-3" : "py-5"}`}
-    >
+    <motion.header initial={{ y: -40, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }} className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ${scrolled ? "py-3" : "py-5"}`}>
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6">
         <a href="#top" className={`glass rounded-full px-4 py-2 font-display text-sm font-semibold tracking-tight ${scrolled ? "glow-soft" : ""}`}>
           <span className="text-gradient">DA</span>
@@ -69,8 +66,7 @@ export function Nav() {
         </a>
         <nav className="glass hidden rounded-full px-2 py-2 md:flex">
           {NAV.map((n) => (
-            <a key={n.id} href={`#${n.id}`}
-              className="rounded-full px-4 py-1.5 text-sm text-muted-foreground transition-colors hover:bg-white/5 hover:text-foreground">
+            <a key={n.id} href={`#${n.id}`} className="rounded-full px-4 py-1.5 text-sm text-muted-foreground transition-colors hover:bg-white/5 hover:text-foreground">
               {n.label}
             </a>
           ))}
@@ -84,166 +80,99 @@ export function Nav() {
   );
 }
 
-/* ---------- Hero ---------- */
 export function Hero() {
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
   const y = useTransform(scrollYProgress, [0, 1], [0, 200]);
   const opacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
-
   return (
     <section ref={ref} id="top" className="relative isolate flex min-h-screen items-center justify-center overflow-hidden pt-24">
       <div className="absolute inset-0 aurora-bg animate-aurora" />
       <div className="absolute inset-0 mesh-grid" />
-      {/* floating orbs */}
       <motion.div className="absolute left-[10%] top-[20%] h-72 w-72 rounded-full bg-[var(--violet)]/30 blur-3xl animate-pulse-glow" />
       <motion.div className="absolute right-[10%] bottom-[15%] h-96 w-96 rounded-full bg-[var(--cyan)]/20 blur-3xl animate-pulse-glow" style={{ animationDelay: "2s" }} />
-
       <motion.div style={{ y, opacity }} className="relative z-10 mx-auto max-w-6xl px-6 text-center">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-          className="glass mx-auto mb-8 inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-xs font-medium text-muted-foreground"
-        >
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.2 }} className="glass mx-auto mb-8 inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-xs font-medium text-muted-foreground">
           <span className="relative flex h-2 w-2">
             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
             <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
           </span>
           Available for full-time opportunities · 2026
         </motion.div>
-
         <h1 className="font-display text-6xl font-semibold leading-[0.95] tracking-tighter sm:text-7xl md:text-[8rem]">
           {["Devendra", "Ambalkar"].map((word, i) => (
-            <motion.span
-              key={word}
-              initial={{ opacity: 0, y: 80, filter: "blur(20px)" }}
-              animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-              transition={{ duration: 1, delay: 0.3 + i * 0.15, ease: [0.22, 1, 0.36, 1] }}
-              className="block"
-            >
+            <motion.span key={word} initial={{ opacity: 0, y: 80, filter: "blur(20px)" }} animate={{ opacity: 1, y: 0, filter: "blur(0px)" }} transition={{ duration: 1, delay: 0.3 + i * 0.15, ease: [0.22, 1, 0.36, 1] }} className="block">
               <span className={i === 0 ? "text-foreground" : "text-gradient"}>{word}</span>
             </motion.span>
           ))}
         </h1>
-
-        <motion.p
-          initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.8 }}
-          className="mx-auto mt-8 max-w-2xl text-balance text-lg text-muted-foreground sm:text-xl"
-        >
-          MERN full-stack engineer crafting production-grade web platforms
-          end-to-end — from pixel-tight React interfaces to secure Node APIs and
-          scalable MongoDB architectures.
+        <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.8 }} className="mx-auto mt-8 max-w-2xl text-balance text-lg text-muted-foreground sm:text-xl">
+          Java full-stack developer crafting production-grade web apps end-to-end - from Spring Boot APIs and MVC systems to React interfaces and relational or document databases.
         </motion.p>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 1 }}
-          className="mt-10 flex flex-wrap items-center justify-center gap-3"
-        >
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 1 }} className="mt-10 flex flex-wrap items-center justify-center gap-3">
           <a href="#projects" className="group relative overflow-hidden rounded-full bg-gradient-to-r from-[var(--cyan)] via-[var(--primary)] to-[var(--violet)] px-7 py-3.5 font-medium text-primary-foreground glow-primary transition-transform hover:scale-[1.03]">
             <span className="relative z-10 flex items-center gap-2">
               View selected work
               <ArrowUpRight className="h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
             </span>
           </a>
-          <a href="/resume.pdf" download className="glass-strong group flex items-center gap-2 rounded-full px-7 py-3.5 font-medium transition-all hover:bg-white/10">
-            <Download className="h-4 w-4" /> Download Résumé
+          <a href="/Resume_General_ATS.docx" download className="glass-strong group flex items-center gap-2 rounded-full px-7 py-3.5 font-medium transition-all hover:bg-white/10">
+            <Download className="h-4 w-4" /> Download Resume
           </a>
         </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-          transition={{ duration: 1, delay: 1.2 }}
-          className="mt-16 flex items-center justify-center gap-6 text-muted-foreground"
-        >
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1, delay: 1.2 }} className="mt-16 flex items-center justify-center gap-6 text-muted-foreground">
           {[
-            { Icon: Github, href: "https://github.com" },
+            { Icon: Github, href: "https://github.com/Ambalkar" },
             { Icon: Linkedin, href: "https://linkedin.com" },
             { Icon: Mail, href: "mailto:devendraambalkar11@gmail.com" },
           ].map(({ Icon, href }) => (
-            <a key={href} href={href} target="_blank" rel="noreferrer"
-              className="glass rounded-full p-3 transition-all hover:scale-110 hover:text-foreground hover:glow-soft">
+            <a key={href} href={href} target="_blank" rel="noreferrer" className="glass rounded-full p-3 transition-all hover:scale-110 hover:text-foreground hover:glow-soft">
               <Icon className="h-4 w-4" />
             </a>
           ))}
-        </motion.div>
-      </motion.div>
-
-      {/* scroll cue */}
-      <motion.div
-        initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.5 }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 text-xs uppercase tracking-[0.3em] text-muted-foreground"
-      >
-        <motion.div animate={{ y: [0, 8, 0] }} transition={{ duration: 2, repeat: Infinity }}>
-          scroll
         </motion.div>
       </motion.div>
     </section>
   );
 }
 
-/* ---------- Section helpers ---------- */
 function SectionHeading({ eyebrow, title, sub }: { eyebrow: string; title: string; sub?: string }) {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-100px" }} transition={{ duration: 0.7 }}
-      className="mb-16 max-w-3xl"
-    >
+    <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-100px" }} transition={{ duration: 0.7 }} className="mb-16 max-w-3xl">
       <div className="mb-4 inline-flex items-center gap-2 rounded-full glass px-3 py-1 text-xs font-medium uppercase tracking-[0.2em] text-muted-foreground">
         <Sparkles className="h-3 w-3 text-[var(--cyan)]" /> {eyebrow}
       </div>
-      <h2 className="font-display text-4xl font-semibold leading-tight tracking-tight sm:text-5xl md:text-6xl">
-        {title}
-      </h2>
+      <h2 className="font-display text-4xl font-semibold leading-tight tracking-tight sm:text-5xl md:text-6xl">{title}</h2>
       {sub && <p className="mt-4 max-w-2xl text-lg text-muted-foreground">{sub}</p>}
     </motion.div>
   );
 }
 
-/* ---------- About ---------- */
 export function About() {
   const stats = [
-    { value: "2+", label: "Years building" },
-    { value: "10+", label: "Projects shipped" },
-    { value: "3", label: "Certifications" },
-    { value: "2", label: "Hackathon finals" },
+    { value: "2026", label: "B.Tech expected" },
+    { value: "2", label: "National finals" },
+    { value: "2", label: "Certifications" },
+    { value: "3+", label: "Core stacks" },
   ];
   return (
     <section id="about" className="relative mx-auto max-w-7xl px-6 py-32">
       <SectionHeading eyebrow="About" title="Engineer by craft, product-thinker by instinct." />
       <div className="grid gap-12 lg:grid-cols-5">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }} transition={{ duration: 0.7 }}
-          className="lg:col-span-3 space-y-6 text-lg leading-relaxed text-muted-foreground"
-        >
+        <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.7 }} className="lg:col-span-3 space-y-6 text-lg leading-relaxed text-muted-foreground">
           <p>
-            I'm a <span className="text-foreground">MERN full-stack developer</span> from Wardha, India,
-            obsessed with the moment an interface clicks — when a complex backend disappears behind
-            an experience that feels effortless.
+            I'm a <span className="text-foreground">Java full-stack developer</span> from Pune, India, focused on building software that feels simple on the surface and reliable under the hood.
           </p>
           <p>
-            I've owned applications end-to-end: scaffolding React component systems, designing
-            REST API contracts, modeling MongoDB schemas, hardening auth with JWT and RBAC, and
-            shipping with structured Git workflows. I care about <span className="text-foreground">type safety,
-            accessibility, and pixel-tight visual systems</span> as much as I care about clean route handlers.
+            I've built hierarchical event-booking and e-commerce applications end-to-end: designing Spring Boot and RESTful APIs, modeling MySQL and MongoDB data, implementing session and JWT-based authentication, and testing workflows with Postman. I care about <span className="text-foreground">clean architecture, secure code, and practical UX</span>.
           </p>
           <p>
-            Currently finishing my B.Tech in Computer Engineering, AWS- and IBM-certified, and a
-            Smart India Hackathon 2024 Grand Finalist. Looking for a team that ships fast and treats
-            the craft seriously.
+            I'm completing my B.Tech in Computer Engineering at Bajaj Institute of Technology, with AWS and IBM certifications plus finalist recognition at SIH 2024 and IISF 2024.
           </p>
         </motion.div>
         <div className="lg:col-span-2 grid grid-cols-2 gap-4">
           {stats.map((s, i) => (
-            <motion.div
-              key={s.label}
-              initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }} transition={{ duration: 0.6, delay: i * 0.1 }}
-              className="glass group relative overflow-hidden rounded-3xl p-6 transition-all hover:glow-soft"
-            >
+            <motion.div key={s.label} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: i * 0.1 }} className="glass group relative overflow-hidden rounded-3xl p-6 transition-all hover:glow-soft">
               <div className="absolute inset-0 bg-gradient-to-br from-[var(--cyan)]/10 to-[var(--violet)]/10 opacity-0 transition-opacity group-hover:opacity-100" />
               <div className="relative">
                 <div className="font-display text-4xl font-semibold text-gradient">{s.value}</div>
@@ -257,49 +186,39 @@ export function About() {
   );
 }
 
-/* ---------- Experience / Timeline ---------- */
 const EXPERIENCE = [
   {
-    when: "Aug — Oct 2025",
-    title: "Founding Engineer · The System Store",
-    kind: "Personal Build · MERN Stack",
-    body: "Shipped a production-grade e-commerce platform end-to-end: catalogue, cart, orders, JWT auth with RBAC, and an admin surface. Designed normalized Mongoose schemas with embedded sub-docs and indexed reads for sub-100ms queries.",
+    when: "Jan - Apr 2025",
+    title: "Developer · SEVENT-MS",
+    kind: "Personal Project · Java Full Stack",
+    body: "Built a hierarchical event-booking platform with major and sub-event flows, capacity checks, session authentication, role-based access control, digital ID generation, and image uploads.",
+    stack: ["Java", "Spring Boot", "JDBC", "MySQL", "React", "Docker"],
+  },
+  {
+    when: "Aug - Oct 2025",
+    title: "Developer · The System Store",
+    kind: "Personal Project · MERN Stack",
+    body: "Shipped a JWT-secured e-commerce app with product listings, cart management, order processing, and role-based admin/customer access.",
     stack: ["React", "Node.js", "Express", "MongoDB", "Tailwind", "JWT"],
   },
   {
-    when: "Jan — Apr 2025",
-    title: "Full-Stack Developer · Event Management System",
-    kind: "Academic · React + Java",
-    body: "Built a React frontend for event scheduling and registration over a Java/JDBC/MySQL backend. Applied MVC separation that mirrors Express controller/route/model patterns, with validation and reactive UI state.",
-    stack: ["React", "Java", "MySQL", "JDBC", "Spring", "MVC"],
-  },
-  {
     when: "2024",
-    title: "SIH 2024 Grand Finalist",
-    kind: "National Hackathon · Cybersecurity",
-    body: "Selected as a national finalist for software / cybersecurity innovation among thousands of teams — built and pitched a working prototype under 36 hours.",
-    stack: ["Node.js", "Security", "Rapid prototyping"],
+    title: "National Finalist",
+    kind: "SIH 2024 & IISF 2024",
+    body: "Recognized at the national level for software and cybersecurity innovation, including Smart India Hackathon 2024 Grand Finalist and IISF 2024 S&T Hackathon Finalist.",
+    stack: ["Hackathons", "Security", "Rapid prototyping"],
   },
 ];
 
 export function Experience() {
   return (
     <section id="experience" className="relative mx-auto max-w-7xl px-6 py-32">
-      <SectionHeading
-        eyebrow="Experience"
-        title="A timeline of things I've shipped."
-        sub="From hackathon prototypes to production-grade full-stack platforms."
-      />
+      <SectionHeading eyebrow="Experience" title="A timeline of things I've shipped." sub="From hackathon recognition to full-stack applications." />
       <div className="relative">
         <div className="absolute left-4 top-2 bottom-2 w-px bg-gradient-to-b from-transparent via-[var(--primary)]/40 to-transparent md:left-1/2" />
         <div className="space-y-12">
           {EXPERIENCE.map((e, i) => (
-            <motion.div
-              key={e.title}
-              initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-80px" }} transition={{ duration: 0.7, delay: 0.05 }}
-              className={`relative grid gap-6 md:grid-cols-2 ${i % 2 ? "md:[&>div:first-child]:order-2" : ""}`}
-            >
+            <motion.div key={e.title} initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-80px" }} transition={{ duration: 0.7 }} className={`relative grid gap-6 md:grid-cols-2 ${i % 2 ? "md:[&>div:first-child]:order-2" : ""}`}>
               <div className="relative md:px-12">
                 <div className="absolute left-4 top-6 -translate-x-1/2 md:left-0 md:translate-x-0">
                   <div className="relative h-3 w-3 rounded-full bg-[var(--cyan)] glow-primary">
@@ -316,9 +235,7 @@ export function Experience() {
                 <p className="text-muted-foreground">{e.body}</p>
                 <div className="mt-4 flex flex-wrap gap-2">
                   {e.stack.map((s) => (
-                    <span key={s} className="rounded-full border border-white/10 bg-white/5 px-2.5 py-1 text-xs text-muted-foreground">
-                      {s}
-                    </span>
+                    <span key={s} className="rounded-full border border-white/10 bg-white/5 px-2.5 py-1 text-xs text-muted-foreground">{s}</span>
                   ))}
                 </div>
               </div>
@@ -330,31 +247,30 @@ export function Experience() {
   );
 }
 
-/* ---------- Projects ---------- */
 const PROJECTS = [
   {
-    name: "The System Store",
-    tag: "MERN · Production",
-    blurb: "Full-stack e-commerce: catalogue, cart, orders, JWT-secured admin & customer roles.",
+    name: "SEVENT-MS",
+    tag: "Java Full Stack · Personal Project",
+    blurb: "Hierarchical event-booking platform with role-based access, session auth, capacity validation, and image uploads.",
     metrics: [
-      { k: "100%", v: "End-to-end ownership" },
-      { k: "JWT + RBAC", v: "Auth model" },
-      { k: "Mongoose", v: "Indexed schemas" },
+      { k: "MVC", v: "Architecture" },
+      { k: "Session + RBAC", v: "Access control" },
+      { k: "Docker", v: "Consistent deploys" },
     ],
-    stack: ["React", "Node.js", "Express", "MongoDB", "Tailwind"],
+    stack: ["Java", "Spring Boot", "JDBC", "MySQL", "React"],
     accent: "from-[var(--cyan)] to-[var(--primary)]",
     href: "https://github.com",
   },
   {
-    name: "Event Management System",
-    tag: "React · Java · MySQL",
-    blurb: "React UI on a Java/JDBC backend for event creation, scheduling, registration & cancellation.",
+    name: "The System Store",
+    tag: "MERN · Full Stack",
+    blurb: "JWT-secured e-commerce platform with cart, orders, admin controls, and MongoDB-backed product and order workflows.",
     metrics: [
-      { k: "MVC", v: "Architecture" },
-      { k: "JDBC", v: "Data layer" },
-      { k: "Reactive", v: "UI state" },
+      { k: "JWT", v: "Authentication" },
+      { k: "RBAC", v: "User roles" },
+      { k: "MongoDB", v: "Document design" },
     ],
-    stack: ["React", "Java", "MySQL", "Spring"],
+    stack: ["React", "Node.js", "Express", "MongoDB", "Tailwind"],
     accent: "from-[var(--violet)] to-[var(--magenta)]",
     href: "https://github.com",
   },
@@ -363,27 +279,16 @@ const PROJECTS = [
 export function Projects() {
   return (
     <section id="projects" className="relative mx-auto max-w-7xl px-6 py-32">
-      <SectionHeading
-        eyebrow="Selected Work"
-        title="Projects that taught me how to ship."
-        sub="Each one was built end-to-end — design, API, data, deploy."
-      />
+      <SectionHeading eyebrow="Selected Work" title="Projects aligned to the resume." sub="Java full stack and MERN builds with authentication, data modeling, and deployment in mind." />
       <div className="space-y-8">
         {PROJECTS.map((p, i) => (
-          <motion.a
-            key={p.name} href={p.href} target="_blank" rel="noreferrer"
-            initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-80px" }} transition={{ duration: 0.7, delay: i * 0.05 }}
-            className="group relative block overflow-hidden rounded-[2rem] glass-strong p-1 transition-all hover:glow-primary"
-          >
+          <motion.a key={p.name} href={p.href} target="_blank" rel="noreferrer" initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-80px" }} transition={{ duration: 0.7, delay: i * 0.05 }} className="group relative block overflow-hidden rounded-[2rem] glass-strong p-1 transition-all hover:glow-primary">
             <div className="relative grid gap-8 rounded-[1.85rem] bg-card/40 p-8 md:grid-cols-5 md:p-12">
               <div className="md:col-span-3">
                 <div className={`mb-4 inline-flex items-center gap-2 rounded-full bg-gradient-to-r ${p.accent} bg-clip-text text-xs font-medium uppercase tracking-[0.2em] text-transparent`}>
                   <span className="h-1 w-1 rounded-full bg-[var(--cyan)]" /> {p.tag}
                 </div>
-                <h3 className="font-display text-3xl font-semibold tracking-tight md:text-5xl">
-                  {p.name}
-                </h3>
+                <h3 className="font-display text-3xl font-semibold tracking-tight md:text-5xl">{p.name}</h3>
                 <p className="mt-4 max-w-xl text-lg text-muted-foreground">{p.blurb}</p>
                 <div className="mt-6 flex flex-wrap gap-2">
                   {p.stack.map((s) => (
@@ -403,7 +308,6 @@ export function Projects() {
                   </div>
                 ))}
               </div>
-              {/* spotlight */}
               <div className={`pointer-events-none absolute -inset-px rounded-[2rem] bg-gradient-to-br ${p.accent} opacity-0 blur-2xl transition-opacity duration-500 group-hover:opacity-20`} />
             </div>
           </motion.a>
@@ -413,31 +317,22 @@ export function Projects() {
   );
 }
 
-/* ---------- Skills ---------- */
 const SKILLS = [
-  { Icon: Code2, label: "Frontend", items: ["React.js", "TypeScript", "JavaScript", "Tailwind CSS", "React Router", "Component Architecture", "State Management", "HTML5 / CSS3"] },
-  { Icon: Server, label: "Backend & APIs", items: ["Node.js", "Express.js", "REST APIs", "JWT Auth", "RBAC", "Middleware Design", "MVC Architecture"] },
-  { Icon: Database, label: "Databases", items: ["MongoDB", "Mongoose ODM", "Schema Design", "MySQL", "JDBC"] },
-  { Icon: Cloud, label: "Cloud & DevOps", items: ["AWS", "Linux", "Docker (basics)", "Git / GitHub", "Postman", "npm"] },
-  { Icon: Shield, label: "Security", items: ["Secure Coding", "JWT", "RBAC", "SOC Fundamentals"] },
-  { Icon: Sparkles, label: "Languages", items: ["JavaScript", "TypeScript", "Java", "Python", "Shell"] },
+  { Icon: Code2, label: "Frontend", items: ["React.js", "HTML5", "CSS3", "Tailwind CSS", "JavaScript"] },
+  { Icon: Server, label: "Backend & APIs", items: ["Java", "Spring Boot", "Spring MVC", "RESTful APIs", "Node.js", "Express.js"] },
+  { Icon: Database, label: "Databases", items: ["MySQL", "PostgreSQL", "MongoDB", "SQL", "JDBC"] },
+  { Icon: Cloud, label: "Cloud & Tools", items: ["AWS", "Linux", "Git", "GitHub", "Postman", "Maven", "Docker"] },
+  { Icon: Shield, label: "Security", items: ["JWT", "RBAC", "Session Auth", "Secure Coding", "SOC Basics"] },
+  { Icon: Sparkles, label: "Languages", items: ["Java", "JavaScript", "Python", "OOP", "DSA"] },
 ];
 
 export function Skills() {
   return (
     <section id="skills" className="relative mx-auto max-w-7xl px-6 py-32">
-      <SectionHeading
-        eyebrow="Capabilities"
-        title="A full-stack toolkit, sharpened on real builds."
-      />
+      <SectionHeading eyebrow="Capabilities" title="A full-stack toolkit, sharpened on real builds." />
       <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
         {SKILLS.map((s, i) => (
-          <motion.div
-            key={s.label}
-            initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }} transition={{ duration: 0.6, delay: i * 0.05 }}
-            className="group relative overflow-hidden rounded-3xl glass p-6 transition-all hover:-translate-y-1 hover:glow-soft"
-          >
+          <motion.div key={s.label} initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: i * 0.05 }} className="group relative overflow-hidden rounded-3xl glass p-6 transition-all hover:-translate-y-1 hover:glow-soft">
             <div className="absolute -right-10 -top-10 h-32 w-32 rounded-full bg-gradient-to-br from-[var(--cyan)]/20 to-[var(--violet)]/20 blur-2xl transition-opacity group-hover:opacity-100" />
             <div className="relative">
               <div className="mb-4 inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-br from-[var(--cyan)]/20 to-[var(--violet)]/20 text-[var(--cyan)]">
@@ -459,14 +354,13 @@ export function Skills() {
   );
 }
 
-/* ---------- Achievements ---------- */
 const ACHIEVEMENTS = [
-  { Icon: Trophy, t: "SIH 2024 Grand Finalist", s: "Smart India Hackathon — software / cybersecurity track" },
+  { Icon: Trophy, t: "SIH 2024 Grand Finalist", s: "Smart India Hackathon - software / cybersecurity track" },
   { Icon: Trophy, t: "IISF 2024 S&T Finalist", s: "Science & Technology hackathon recognition" },
-  { Icon: Award, t: "AWS Cloud Developing", s: "AWS Academy Graduate · cloud-native development" },
-  { Icon: Award, t: "AWS Cloud Foundations", s: "AWS Academy Graduate · core services & architecture" },
-  { Icon: Shield, t: "SOC in Practice", s: "IBM SkillsBuild · hands-on SOC operations" },
-  { Icon: Sparkles, t: "B.Tech Computer Engineering", s: "Bajaj Institute of Technology · Expected Nov 2026" },
+  { Icon: Award, t: "AWS Cloud Developing", s: "AWS Academy Graduate - cloud-native development" },
+  { Icon: Award, t: "AWS Cloud Foundations", s: "AWS Academy Graduate - core services & architecture" },
+  { Icon: Shield, t: "SOC in Practice", s: "IBM SkillsBuild - hands-on SOC operations" },
+  { Icon: Sparkles, t: "B.Tech Computer Engineering", s: "Bajaj Institute of Technology - Expected Nov 2026" },
 ];
 
 export function Achievements() {
@@ -475,12 +369,7 @@ export function Achievements() {
       <SectionHeading eyebrow="Recognition" title="Certifications & awards." />
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {ACHIEVEMENTS.map((a, i) => (
-          <motion.div
-            key={a.t}
-            initial={{ opacity: 0, scale: 0.95 }} whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }} transition={{ duration: 0.5, delay: i * 0.05 }}
-            className="group relative overflow-hidden rounded-2xl glass p-6 transition-all hover:glow-soft"
-          >
+          <motion.div key={a.t} initial={{ opacity: 0, scale: 0.95 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: i * 0.05 }} className="group relative overflow-hidden rounded-2xl glass p-6 transition-all hover:glow-soft">
             <div className="flex items-start gap-4">
               <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-[var(--cyan)]/15 to-[var(--violet)]/15 text-[var(--cyan)]">
                 <a.Icon className="h-5 w-5" />
@@ -497,7 +386,6 @@ export function Achievements() {
   );
 }
 
-/* ---------- Contact ---------- */
 export function Contact() {
   return (
     <section id="contact" className="relative mx-auto max-w-7xl px-6 py-32">
@@ -505,10 +393,7 @@ export function Contact() {
         <div className="absolute inset-0 aurora-bg animate-aurora opacity-60" />
         <div className="absolute inset-0 mesh-grid opacity-50" />
         <div className="relative">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }} transition={{ duration: 0.7 }}
-          >
+          <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.7 }}>
             <div className="mb-4 inline-flex items-center gap-2 rounded-full glass px-3 py-1 text-xs font-medium uppercase tracking-[0.2em] text-muted-foreground">
               <span className="h-2 w-2 animate-pulse rounded-full bg-emerald-400" /> Open to opportunities
             </div>
@@ -516,20 +401,17 @@ export function Contact() {
               Let's build something <span className="text-gradient-aurora">worth shipping</span>.
             </h2>
             <p className="mt-6 max-w-xl text-lg text-muted-foreground">
-              I'm available for full-time roles, contract work, and meaningful side
-              collaborations. The fastest way to reach me is email.
+              I'm available for full-time roles, contract work, and meaningful side collaborations. The fastest way to reach me is email.
             </p>
           </motion.div>
-
           <div className="mt-10 grid gap-4 md:grid-cols-2">
             {[
               { Icon: Mail, l: "Email", v: "devendraambalkar11@gmail.com", h: "mailto:devendraambalkar11@gmail.com" },
               { Icon: Phone, l: "Phone", v: "+91 72496 40336", h: "tel:+917249640336" },
               { Icon: Linkedin, l: "LinkedIn", v: "in/devendra-ambalkar", h: "https://linkedin.com" },
-              { Icon: Github, l: "GitHub", v: "@devendra-ambalkar", h: "https://github.com" },
+              { Icon: Github, l: "GitHub", v: "@devendra-ambalkar", h: "https://github.com/Ambalkar" },
             ].map((c) => (
-              <a key={c.l} href={c.h} target="_blank" rel="noreferrer"
-                className="group glass flex items-center justify-between rounded-2xl p-5 transition-all hover:-translate-y-0.5 hover:glow-soft">
+              <a key={c.l} href={c.h} target="_blank" rel="noreferrer" className="group glass flex items-center justify-between rounded-2xl p-5 transition-all hover:-translate-y-0.5 hover:glow-soft">
                 <div className="flex items-center gap-4">
                   <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br from-[var(--cyan)]/20 to-[var(--violet)]/20 text-[var(--cyan)]">
                     <c.Icon className="h-5 w-5" />
@@ -543,13 +425,11 @@ export function Contact() {
               </a>
             ))}
           </div>
-
           <div className="mt-10 flex items-center gap-2 text-sm text-muted-foreground">
-            <MapPin className="h-4 w-4" /> Wardha, Maharashtra, India · open to remote
+            <MapPin className="h-4 w-4" /> Pune, Maharashtra, India · open to remote
           </div>
         </div>
       </div>
-
       <footer className="mt-16 flex flex-col items-center justify-between gap-4 border-t border-white/5 pt-8 text-sm text-muted-foreground md:flex-row">
         <div>© 2026 Devendra Ambalkar · Crafted with obsession</div>
         <div className="flex items-center gap-2">
